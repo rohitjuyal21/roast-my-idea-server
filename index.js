@@ -1,23 +1,52 @@
-import express from "express";
-import "dotenv/config";
-import mongoose from "mongoose";
-import cors from "cors";
+const express = require("express");
+const dotenv = require("dotenv");
+const cors = require("cors");
+const passport = require("passport");
+const session = require("express-session");
+const connectDB = require("./config/db");
+require("./config/passport");
+
+dotenv.config();
+
+const PORT = process.env.PORT;
 
 const app = express();
 
-const PORT = 8000;
+app.use(express.json());
 
-app.use(express.json(), cors());
-const uri = process.env.MONGODB_URI;
+const corsOptions = {
+  origin: process.env.FRONTEND_URL,
+  credentials: true,
+};
 
-mongoose.connect(uri);
+app.use(cors(corsOptions));
 
-const db = mongoose.connection;
-db.once("open", () => console.log("Connected to MongoDB"));
+connectDB();
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    name: "roastmyidea",
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false },
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+const authRoutes = require("./routes/authRoutes");
+const userRoutes = require("./routes/userRoutes");
+const postRoutes = require("./routes/PostRoutes");
 
 app.get("/", (req, res) => {
   res.send("YO!");
 });
+
+app.use("/auth", authRoutes);
+app.use("/user", userRoutes);
+app.use("/posts", postRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
