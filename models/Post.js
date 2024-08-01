@@ -25,7 +25,7 @@ const postSchema = new mongoose.Schema({
   comments: [
     {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Comment",
     },
   ],
   saves: [

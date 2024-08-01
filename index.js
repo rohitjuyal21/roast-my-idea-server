@@ -39,6 +39,7 @@ app.use(passport.session());
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const postRoutes = require("./routes/PostRoutes");
+const commentRoutes = require("./routes/commentRoutes");
 
 app.get("/", (req, res) => {
   res.send("YO!");
@@ -47,6 +48,7 @@ app.get("/", (req, res) => {
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
 app.use("/posts", postRoutes);
+app.use("/comments", commentRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

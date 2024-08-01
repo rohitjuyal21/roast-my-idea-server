@@ -6,6 +6,6 @@ router.get("/google", authController.googleAuth);
 router.get("/google/callback", authController.googleAuthCallback);
 router.get("/google/success", authController.success);
 router.get("/google/failure", authController.success);
-router.get("/logout", authController.logout);
+router.post("/logout", authController.logout);
 
 module.exports = router;

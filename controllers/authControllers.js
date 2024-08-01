@@ -18,10 +18,10 @@ exports.failure = (req, res) => {
 };
 
 exports.logout = (req, res) => {
+  res.clearCookie("roastmyidea");
   req.logout((err) => {
-    if (err) {
-      return res.status(500).send(err);
-    }
-    res.send("hello");
+    req.session.destroy((err) => {
+      res.send();
+    });
   });
 };
