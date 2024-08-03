@@ -7,12 +7,6 @@ const connectDB = require("./config/db");
 const MongoStore = require("connect-mongo");
 require("./config/passport");
 
-if (process.env.NODE_ENV === "production") {
-  dotenv.config({ path: ".env.production" });
-} else {
-  dotenv.config({ path: ".env.development" });
-}
-
 const PORT = process.env.PORT;
 
 const app = express();
@@ -39,8 +33,8 @@ app.use(
       collectionName: "sessions",
     }),
     cookie: {
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 1000 * 60 * 60 * 24,
+      secure: "auto",
+      maxAge: 1000 * 60 * 60 * 24 * 7,
     },
   })
 );
