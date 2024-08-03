@@ -1,25 +1,24 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const cors = require("cors");
 const passport = require("passport");
 const session = require("express-session");
 const connectDB = require("./config/db");
+const MongoStore = require("connect-mongo");
 require("./config/passport");
+const corsconfig = require("./config/corsconfig");
 
-dotenv.config();
+if (process.env.NODE_ENV === "production") {
+  dotenv.config({ path: ".env.production" });
+} else {
+  dotenv.config({ path: ".env.development" });
+}
 
 const PORT = process.env.PORT;
 
 const app = express();
 
 app.use(express.json());
-
-const corsOptions = {
-  origin: process.env.FRONTEND_URL,
-  credentials: true,
-};
-
-app.use(cors(corsOptions));
+app.use(corsconfig);
 
 connectDB();
 
@@ -29,7 +28,14 @@ app.use(
     name: "roastmyidea",
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false },
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGODB_URI,
+      collectionName: "sessions",
+    }),
+    cookie: {
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 1000 * 60 * 60 * 24,
+    },
   })
 );
 
@@ -40,7 +46,6 @@ const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const postRoutes = require("./routes/PostRoutes");
 const commentRoutes = require("./routes/commentRoutes");
-
 app.get("/", (req, res) => {
   res.send("YO!");
 });
