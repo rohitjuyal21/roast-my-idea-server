@@ -21,6 +21,8 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+console.log("Allowed Frontend URL:", process.env.FRONTEND_URL);
+
 connectDB();
 
 app.use(
