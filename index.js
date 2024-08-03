@@ -5,7 +5,6 @@ const session = require("express-session");
 const connectDB = require("./config/db");
 const MongoStore = require("connect-mongo");
 require("./config/passport");
-const corsconfig = require("./config/corsconfig");
 
 if (process.env.NODE_ENV === "production") {
   dotenv.config({ path: ".env.production" });
@@ -18,7 +17,13 @@ const PORT = process.env.PORT;
 const app = express();
 
 app.use(express.json());
-app.use(corsconfig);
+
+const corsOptions = {
+  origin: process.env.FRONTEND_URL,
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 connectDB();
 
