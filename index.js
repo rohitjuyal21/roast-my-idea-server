@@ -15,6 +15,7 @@ const app = express();
 const allowedOrigins = [
   "http://localhost:3000",
   "https://roast-my-idea.vercel.app",
+  "https://roast-my-idea-server-new.onrender.com",
 ];
 
 const corsOptions = {
