@@ -16,7 +16,7 @@ app.use(express.json());
 
 const allowedOrigins = [
   "http://localhost:3000", // Development URL
-  "https://roast-my-idea.vercel.app/", // Production URL
+  "https://roast-my-idea.vercel.app", // Production URL
 ];
 
 const corsOptions = {
