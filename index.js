@@ -12,11 +12,9 @@ const PORT = process.env.PORT;
 
 const app = express();
 
-app.use(express.json());
-
 const allowedOrigins = [
-  "http://localhost:3000", // Development URL
-  "https://roast-my-idea.vercel.app", // Production URL
+  "http://localhost:3000",
+  "https://roast-my-idea.vercel.app",
 ];
 
 const corsOptions = {
@@ -31,6 +29,8 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+
+app.use(express.json());
 
 console.log("Allowed Frontend URL:", process.env.FRONTEND_URL);
 
