@@ -12,20 +12,8 @@ const PORT = process.env.PORT;
 
 const app = express();
 
-const allowedOrigins = [
-  "http://localhost:3000",
-  "https://roast-my-idea.vercel.app",
-  "https://roast-my-idea-server-new.onrender.com",
-];
-
 const corsOptions = {
-  origin: (origin, callback) => {
-    if (allowedOrigins.includes(origin) || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
+  origin: process.env.FRONTEND_URL,
   credentials: true,
 };
 

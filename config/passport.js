@@ -2,12 +2,8 @@ const passport = require("passport");
 const User = require("../models/User");
 const GoogleStrategy = require("passport-google-oauth2").Strategy;
 const dotenv = require("dotenv");
+dotenv.config();
 
-if (process.env.NODE_ENV === "production") {
-  dotenv.config({ path: ".env.production" });
-} else {
-  dotenv.config({ path: ".env.development" });
-}
 passport.use(
   new GoogleStrategy(
     {

@@ -1,11 +1,6 @@
 const passport = require("passport");
 const dotenv = require("dotenv");
-
-if (process.env.NODE_ENV === "production") {
-  dotenv.config({ path: ".env.production" });
-} else {
-  dotenv.config({ path: ".env.development" });
-}
+dotenv.config();
 
 console.log(`Environment: ${process.env.NODE_ENV}`);
 console.log(`Frontend URL: ${process.env.FRONTEND_URL}`);
