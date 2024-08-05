@@ -1,48 +1,22 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
 
-const postSchema = new mongoose.Schema({
-  idea: {
+const userSchema = new mongoose.Schema({
+  googleId: {
     type: String,
     required: true,
   },
-  category: {
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  name: {
     type: String,
     required: true,
   },
-  upvotes: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-    },
-  ],
-  downvotes: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-    },
-  ],
-  comments: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Comment",
-    },
-  ],
-  saves: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-    },
-  ],
-  createdBy: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
+  profileImage: {
+    type: String,
   },
 });
 
-module.exports = mongoose.model("Post", postSchema);
+module.exports = mongoose.model("User", userSchema);
