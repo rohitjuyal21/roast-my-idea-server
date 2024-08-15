@@ -6,7 +6,6 @@ exports.getUserProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
     res.json(user);
-    console.log("userfetched", user);
   } catch (error) {
     res.status(500).json({ message: error.message });
     console.log("userfetched error", error.message);
