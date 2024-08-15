@@ -105,3 +105,12 @@ exports.googleOAuthHandler = async (req, res) => {
     res.redirect(`${process.env.FRONTEND_URL}/login?error=oauth_failed`);
   }
 };
+
+exports.logout = (req, res) => {
+  res.clearCookie("jwt", {
+    httpOnly: true,
+    sameSite: process.env.NODE_ENV === "Development" ? "lax" : "none",
+    secure: process.env.NODE_ENV === "Development" ? false : true,
+  });
+  res.status(200).json({ message: "Logged out successfully" });
+};
