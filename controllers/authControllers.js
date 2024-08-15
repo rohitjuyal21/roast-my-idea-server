@@ -19,8 +19,6 @@ const getGoogleAuthURL = () => {
     ].join(" "),
   };
 
-  console.log(options);
-
   return `${rootUrl}?${QueryString.stringify(options)}`;
 };
 
@@ -49,7 +47,6 @@ exports.googleOAuthHandler = async (req, res) => {
     );
 
     const { access_token } = tokenResponse.data;
-    console.log(access_token);
 
     const userInfoResponse = await axios.get(
       `https://www.googleapis.com/oauth2/v3/userinfo`,
@@ -59,8 +56,6 @@ exports.googleOAuthHandler = async (req, res) => {
         },
       }
     );
-
-    console.log(userInfoResponse);
 
     const {
       sub: googleId,
@@ -98,7 +93,6 @@ exports.googleOAuthHandler = async (req, res) => {
       secure: process.env.NODE_ENV === "Development" ? false : true,
     });
 
-    console.log(userInfoResponse);
     res.redirect(`${process.env.FRONTEND_URL}`);
   } catch (error) {
     console.error("OAuth callback error:", error);

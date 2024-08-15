@@ -16,10 +16,21 @@ exports.getUserProfile = async (req, res) => {
 exports.deleteAccount = async (req, res) => {
   const userId = req.user._id;
 
+  const userComments = await Comment.find({ user: userId });
+
+  const userCommentIds = userComments.map((comment) => comment._id);
+
   try {
     await Post.updateMany(
       {},
-      { $pull: { upvotes: userId, downvotes: userId, saves: userId } }
+      {
+        $pull: {
+          upvotes: userId,
+          downvotes: userId,
+          saves: userId,
+          comments: { $in: userCommentIds },
+        },
+      }
     );
     await Comment.updateMany(
       {},
@@ -28,6 +39,12 @@ exports.deleteAccount = async (req, res) => {
     await Comment.deleteMany({ user: userId });
     await Post.deleteMany({ createdBy: userId });
     await User.findByIdAndDelete(userId);
+
+    res.clearCookie("jwt", {
+      httpOnly: true,
+      sameSite: process.env.NODE_ENV === "Development" ? "lax" : "none",
+      secure: process.env.NODE_ENV === "Development" ? false : true,
+    });
 
     res.status(200).json({ message: "Account deleted successfully" });
   } catch (error) {
