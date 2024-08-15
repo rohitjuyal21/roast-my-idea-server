@@ -12,18 +12,19 @@ const PORT = process.env.PORT;
 
 const app = express();
 
-const corsOptions = {
-  origin: process.env.FRONTEND_URL,
-  credentials: true,
-};
-
-app.use(cors(corsOptions));
-
 app.use(express.json());
 
 console.log("Allowed Frontend URL:", process.env.FRONTEND_URL);
 
 connectDB();
+
+app.use(
+  cors({
+    origin: [process.env.FRONTEND_URL],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 
 app.use(
   session({
@@ -36,9 +37,10 @@ app.use(
       collectionName: "sessions",
     }),
     cookie: {
-      secure: process.env.NODE_ENV === "production",
       maxAge: 1000 * 60 * 60 * 24 * 7,
       sameSite: "none",
+      sameSite: process.env.NODE_ENV === "Development" ? "lax" : "none",
+      secure: process.env.NODE_ENV === "Development" ? false : true,
     },
   })
 );
